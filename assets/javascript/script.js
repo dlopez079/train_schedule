@@ -81,52 +81,60 @@ database.ref().on("child_added", function (snap) {
   console.log(firstTrain);
   console.log(frequency);
 
-  // Clean the Train Start Time
-  var firstTrainMoment = moment.unix(firstTrain).format("HH:MM");
+  // // Clean the Train Start Time
+  // var firstTrainMoment = moment.unix(firstTrain).format("HH:MM");
 
-  // Calculate the train minutes worked using hardcore math
-  // To calculate the train distance
-  var fTrainTime = moment().diff(moment(firstTrain, "X"), "time");
+  // // Calculate the train minutes worked using hardcore math
+  // // To calculate the train distance
+  // var fTrainTime = moment().diff(moment(firstTrain, "X"), "time");
   
 
-  // Calculate the total billed rate
-  var minAway = fTrainTime * frequency;
+  // // Calculate the total billed rate
+  // var minAway = fTrainTime * frequency;
   
 
   //TRAIN CALCULATION
   // First Time (pushed back 1 year to make sure it comes before current time)
   var firstTimeConverted = moment(firstTrain, "HH:mm").subtract(1, "years");
-  
+  console.log(firstTimeConverted);
 
   // Establish a variable that will give me the current time.
   var currentTime = moment();
-  
+  console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
+
 
   // Establish a variable that will hold the difference in time. 
   var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
-  
+  console.log("DIFFERENCE IN TIME: " + diffTime);
+
 
   // Establish a variable that will give me time apart
   var tRemainder = diffTime % frequency;
-  c
+  console.log(tRemainder);
+
 
   // Establish variable that will give me the minutes until train
   var tMinutesTillTrain = frequency - tRemainder;
-  
+  console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
+
 
   // Establish time for the next time. 
   var nextTrain = moment().add(tMinutesTillTrain, "minutes");
-  
 
+  //Format time to display hh:mm
+  var nextTrainDisplay =  moment(nextTrain).format("hh:mm");
+
+  //Console.log nextTrainDisplay
+  console.log("ARRIVAL TIME: " + nextTrainDisplay);
 
   // Create the new row
   var newRow = $("<tr>").append(
     $("<td>").text(train),
     $("<td>").text(destination),
-    $("<td>").text(firstTrainMoment),
-    $("<td>").text(fTrainTime),
     $("<td>").text(frequency),
-    //   $("<td>").text(minAway)
+    $("<td>").text(nextTrainDisplay),
+    // $("<td>").text(fTrainTime),
+    $("<td>").text(tMinutesTillTrain),
   );
 
   // Append the new row to the table
